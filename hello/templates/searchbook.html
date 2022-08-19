@@ -2,9 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search Book</title>
+    <title>Books</title>
 </head>
 <body>
-{{book}}
+Books
+<br>
+
+
+<form action="" method="get">
+    <input type="text" name="searchValue" value="{{searchValue}}"><br>
+    <input type="submit" name="" value="submit">
+</form>
+<table border="5">
+    <tr>
+
+        <th>Book Image</th>
+        <th>Book selflink</th>
+        <th>Title</th>
+        <th>Aurthors</th>
+        <th>Pages</th>
+        <th>Publisher</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Buy</th>
+    </tr>
+    {% for book in books%}
+    <tr>
+        <td><img src="{{book.volumeInfo.imageLinks.thumbnail}}"/></td>
+        <td><a href="/selflink?path={{book.selfLink}}"  target=" ">selflink</a></td>
+        <td>{{book.volumeInfo.title}}</td>
+        <td style="color:red">{{book.volumeInfo.authors}}</td>
+        <td>{{book.volumeInfo.pageCount}}</td>
+        <td style="color:blue">{{book.volumeInfo.publisher}}</td>
+        <td>{{book.saleInfo.listPrice.amount}}<br>{{book.saleInfo.listPrice.currencyCode}}</td>
+        <td>{{book.volumeInfo.description}}</td>
+        <td><a href="{{book.saleInfo.buyLink}}">buy</a></td>
+    </tr>
+    {% endfor %}
+
+
+</table>
 </body>
 </html>

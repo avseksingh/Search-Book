@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path ('', views.booksearch, name = 'booksearch'),
+    path ('', views.bookssearch, name = 'bookssearch'),
+    path ('selflink', views.selflink, name = 'selflink'),
 
     ]

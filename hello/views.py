@@ -1,21 +1,39 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import requests
+import requests, json
 from .models import Greeting
 
 # Create your views here.
-def booksearch(request):
-    # return HttpResponse('Hello from Python!')
-    searchValue = input("Enter search value\n")
-    link = "https://www.googleapis.com/books/v1/volumes?q={0}".format(searchValue)
-    print(link)
-    response = requests.get(link)
-    print(response.json())
-    books = response.json()["items"]
-    print(books)
-    for book in books:
-        print(book)
-    return render(request, "searchbook.html", {"book":book})
+def bookssearch(request):
+    searchValue = ""
+    b={}
+    books = {}
+    if request.GET:
+        searchValue = request.GET["searchValue"]
+
+        path = "https://www.googleapis.com/books/v1/volumes?q={0}".format(searchValue)
+        # print(path)
+        url = requests.get(path)
+        # print(response.json())
+        books = json.loads(url.text)
+        print(len(books), type(books))
+        for book in books:
+            print(book)
+        # b = json.dumps(books)
+        b = books["items"]
+        print(b)
+    return render(request, "searchbook.html", {"books": b,"searchValue":searchValue})
+        # return HttpResponse(json.dumps(books), content_type='application/json')
+    return render(request, "searchbook.html")
+
+def selflink(request):
+    path= request.GET["path"]
+    print(path ,"")
+    url = requests.get(path)
+    bookselflink = json.loads(url.text)
+    # print(len(bookselflink))
+    return render(request,"selflink.html",{"books":bookselflink})
+    # return HttpResponse(json.dumps(bookselflink),content_type='application/json')
 
 
 def index(request):
